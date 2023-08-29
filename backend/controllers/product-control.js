@@ -1,4 +1,6 @@
+const catchAsyncError = require("../middleware/asyncCatch")
 const Product = require("../model/product-model")
+const ErrorHendler = require("../utils/errorhendler")
 
 //Get all product
 const getAllPrduct=async(req,res)=>{
@@ -10,25 +12,22 @@ const getAllPrduct=async(req,res)=>{
 }
 
 //create product
-const createProduct=async(req,res)=>{
+const createProduct= catchAsyncError( async(req,res)=>{
     const productDetaile=await Product.create(req.body)
     res.status(201).json({
         success:true,
         productDetaile
     })
-
-}
+});
 
 //Updated Product
-const updateProduct=async(req,res)=>{
+const updateProduct=async(req,res,next)=>{
     const update=await Product.findByIdAndUpdate(req.params.id,req.body)
 
     if(!update){
-        return res.status(500).json({
-            success:false,
-            Message:"Product Not Found"
-        })
+        return next(new ErrorHendler("Product Not Found",404))
     }
+
     res.status(200).json({
         success:true,
         update
@@ -36,8 +35,15 @@ const updateProduct=async(req,res)=>{
 }
 
 //delete product
-const deleteProduct=async(req,res)=>{
-    const remove=await Product.findByIdAndDelete(req.params.id)
+const deleteProduct=async(req,res,next)=>{
+
+    let remove=await Product.findById(req.params.id)
+
+    if(!remove){
+        return next(new ErrorHendler("Product Not Found",404))
+    }
+
+    remove=await Product.findByIdAndDelete(req.params.id)
     res.status(200).json({
         success:true,
         remove
