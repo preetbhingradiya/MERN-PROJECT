@@ -23,8 +23,23 @@ class ApiFeatures {
     const removeFileds=['name','page','limit']
 
     removeFileds.forEach(key=>delete qureyCopy[key])
+    // this.qurey=this.qurey.find(qureyCopy)  find cataegry and remove another fileds
 
-    this.qurey=this.qurey.find(qureyCopy)
+    //Filer for price
+    let convertStr=JSON.stringify(qureyCopy);
+    convertStr=convertStr.replace(/\b(gt|gte|lt|lte)\b/g,(key)=>`$${key}`) 
+
+    this.qurey=this.qurey.find(JSON.parse(convertStr))
+    return this
+  }
+
+  pagination(resultPage){
+
+    const currentPage=Number(this.qureystr.page) || 1
+
+    const skip=resultPage*(currentPage-1)   //10*(2-1) 10*1 : 10 product skip and show 2 page
+
+    this.qurey=this.qurey.limit(resultPage).skip(skip)
     return this
   }
 }
