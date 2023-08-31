@@ -1,13 +1,15 @@
 const catchAsyncError = require("../middleware/asyncCatch")
 const Product = require("../model/product-model")
 const ErrorHendler = require("../utils/errorhendler")
+const ApiFeatures = require("../utils/featurse")
 
 //Get all product
 const getAllPrduct=async(req,res)=>{
-    const show=await Product.find()
+    const API=new ApiFeatures(Product.find(),req.query).search().filter()
+    const show=await API.qurey
     res.status(200).json({
         success:true,
-        Message:show
+        show
     })
 }
 
@@ -21,7 +23,7 @@ const createProduct= catchAsyncError( async(req,res)=>{
 });
 
 //Updated Product
-const updateProduct=async(req,res,next)=>{
+const updateProduct=catchAsyncError(async(req,res,next)=>{
     const update=await Product.findByIdAndUpdate(req.params.id,req.body)
 
     if(!update){
@@ -32,10 +34,10 @@ const updateProduct=async(req,res,next)=>{
         success:true,
         update
     })
-}
+})
 
 //delete product
-const deleteProduct=async(req,res,next)=>{
+const deleteProduct=catchAsyncError(async(req,res,next)=>{
 
     let remove=await Product.findById(req.params.id)
 
@@ -48,6 +50,6 @@ const deleteProduct=async(req,res,next)=>{
         success:true,
         remove
     })
-}
+})
 
 module.exports={getAllPrduct,createProduct,updateProduct,deleteProduct}
