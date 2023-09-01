@@ -22,6 +22,9 @@ const getAllPrduct = async (req, res) => {
 
 //create product
 const createProduct = catchAsyncError(async (req, res) => {
+
+  req.body.user=req.user.id
+
   const productDetaile = await Product.create(req.body);
   res.status(201).json({
     success: true,
