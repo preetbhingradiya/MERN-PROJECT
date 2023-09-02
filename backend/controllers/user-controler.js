@@ -87,7 +87,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
 const resetPassword = catchAsyncError(async (req, res, next) => {
   const resetPasswordToken = crypto
     .createHash("sha256")
-    .update(req.paramas.token)
+    .update(req.params.token)
     .digest("hex");
 
   const user=await User.findOne({

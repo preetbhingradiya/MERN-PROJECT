@@ -8,7 +8,7 @@ userRouter.post("/register",registerUser)
 
 userRouter.post('/login',loginUser)
 
-userRouter.post('/password/forgat',forgotPassword)
+userRouter.post('/password/forgot',forgotPassword)
 
 userRouter.patch('/password/reset/:token',resetPassword)
 
