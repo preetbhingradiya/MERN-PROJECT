@@ -4,7 +4,7 @@ const User = require("../model/user-model");
 const bcrypt = require("bcryptjs");
 const sendToken = require("../utils/jwtToken");
 const sendMaile = require("../utils/sendemail");
-const crypto=require("crypto")
+const crypto = require("crypto");
 
 //register user
 
@@ -90,25 +90,81 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
     .update(req.params.token)
     .digest("hex");
 
-  const user=await User.findOne({
+  const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire:{$gt:Date.now()}
-  }) 
+    resetPasswordExpire: { $gt: Date.now() },
+  });
 
   if (!user) return next(new ErrorHendler("Reset password is invalid", 404));
 
-  if(req.body.password !== req.body.comfirmpassword){
-  return next(new ErrorHendler("password not match", 404));
+  if (req.body.password !== req.body.comfirmpassword) {
+    return next(new ErrorHendler("password not match", 404));
   }
 
-  user.password=req.body.password;
-  user.resetPasswordToken=undefined
-  user.resetPasswordExpire=undefined
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  sendToken(user, 200, res);
+});
+
+//get find user
+const userDetaile = catchAsyncError(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+//Update Password 
+const updatePassword = catchAsyncError(async (req, res,next) => {
+  const {password}=req.body
+  const user = await User.findById(req.user.id).select("+password")
+
+  
+  const matchPassword = await bcrypt.compare(password, user.password);
+  console.log(matchPassword);
+  
+  if(!matchPassword) return next(new ErrorHendler("Old password incorrect ",400))
+
+  if(req.body.newpassword !== req.body.confirmpassword) return next(new ErrorHendler("password does not match"))
+
+  user.password=req.body.newpassword
 
   await user.save()
 
   sendToken(user,200,res)
-
 });
 
-module.exports = { registerUser, loginUser, forgotPassword,resetPassword };
+//Update Profile
+const updateProfile=catchAsyncError(async(req,res,next)=>{
+  const newData={
+    name:req.body.name,
+    email:req.body.email
+  }
+
+  const updatProfile=await User.findByIdAndUpdate(req.user.id,newData,{
+    new:true,
+    runValidators:true,
+    useFindAndModify:false
+  })
+
+  res.status(200).json({
+    success:true,
+    updatProfile
+  })
+
+})
+
+module.exports = {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  userDetaile,
+  updatePassword,
+  updateProfile
+};
