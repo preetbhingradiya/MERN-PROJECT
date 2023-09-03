@@ -6,7 +6,7 @@ const ApiFeatures = require("../utils/featurse");
 //Get all product
 const getAllPrduct = async (req, res) => {
   let resultPage = 5;
-  const productCount=await Product.countDocuments()
+  const productCount = await Product.countDocuments();
 
   const API = new ApiFeatures(Product.find(), req.query)
     .search()
@@ -16,14 +16,13 @@ const getAllPrduct = async (req, res) => {
   res.status(200).json({
     success: true,
     show,
-    productCount
+    productCount,
   });
 };
 
 //create product
 const createProduct = catchAsyncError(async (req, res) => {
-
-  req.body.user=req.user.id
+  req.body.user = req.user.id;
 
   const productDetaile = await Product.create(req.body);
   res.status(201).json({
@@ -61,4 +60,9 @@ const deleteProduct = catchAsyncError(async (req, res, next) => {
   });
 });
 
-module.exports = { getAllPrduct, createProduct, updateProduct, deleteProduct };
+module.exports = {
+  getAllPrduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

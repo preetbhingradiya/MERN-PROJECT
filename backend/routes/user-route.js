@@ -1,5 +1,5 @@
 const  Router  = require("express");
-const { registerUser, loginUser, forgotPassword, resetPassword, userDetaile, updatePassword, updateProfile } = require("../controllers/user-controler");
+const { registerUser, loginUser, forgotPassword, resetPassword, userDetaile, updatePassword, updateProfile, allUser, deleteUser } = require("../controllers/user-controler");
 const { logoutUser, Auth } = require("../middleware/auth");
 
 const userRouter=Router()
@@ -16,9 +16,13 @@ userRouter.get('/me',Auth,userDetaile)  //cheack only login user
 
 userRouter.patch("/password/update",Auth,updatePassword)
 
-userRouter.patch('/me/profile',Auth,updateProfile)
+userRouter.patch('/me/profile/:id',Auth,updateProfile)
+
+userRouter.get('/all/user',Auth,allUser)
 
 userRouter.get('/logout',logoutUser)
+
+userRouter.delete('/delete/user/:id',Auth,deleteUser)
 
 
 module.exports=userRouter

@@ -119,44 +119,67 @@ const userDetaile = catchAsyncError(async (req, res) => {
   });
 });
 
-//Update Password 
-const updatePassword = catchAsyncError(async (req, res,next) => {
-  const {password}=req.body
-  const user = await User.findById(req.user.id).select("+password")
+//Update Password
+const updatePassword = catchAsyncError(async (req, res, next) => {
+  const { password } = req.body;
+  const user = await User.findById(req.user.id).select("+password");
 
-  
   const matchPassword = await bcrypt.compare(password, user.password);
   console.log(matchPassword);
-  
-  if(!matchPassword) return next(new ErrorHendler("Old password incorrect ",400))
 
-  if(req.body.newpassword !== req.body.confirmpassword) return next(new ErrorHendler("password does not match"))
+  if (!matchPassword)
+    return next(new ErrorHendler("Old password incorrect ", 400));
 
-  user.password=req.body.newpassword
+  if (req.body.newpassword !== req.body.confirmpassword)
+    return next(new ErrorHendler("password does not match"));
 
-  await user.save()
+  user.password = req.body.newpassword;
 
-  sendToken(user,200,res)
+  await user.save();
+
+  sendToken(user, 200, res);
 });
 
 //Update Profile
-const updateProfile=catchAsyncError(async(req,res,next)=>{
-  const newData={
-    name:req.body.name,
-    email:req.body.email
-  }
+const updateProfile = catchAsyncError(async (req, res, next) => {
+  const newData = {
+    name: req.body.name,
+    email: req.body.email,
+    role:req.body.role
+  };
 
-  const updatProfile=await User.findByIdAndUpdate(req.user.id,newData,{
-    new:true,
-    runValidators:true,
-    useFindAndModify:false
-  })
+  const updatProfile = await User.findByIdAndUpdate(req.params.id, newData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    updatProfile,
+  });
+});
+
+//find All user
+const allUser = catchAsyncError(async (req, res, next) => {
+  const allUser = await User.find();
+
+  res.json({ 
+    success: true,
+    allUser,
+  });
+});
+
+//delete user
+const deleteUser=catchAsyncError(async(req,res,next)=>{
+  const deleteUser=await User.findByIdAndDelete(req.params.id)
+
+  if(!deleteUser) return next(new ErrorHendler("User Not Exit",400))
 
   res.status(200).json({
     success:true,
-    updatProfile
+    deleteUser
   })
-
 })
 
 module.exports = {
@@ -166,5 +189,7 @@ module.exports = {
   resetPassword,
   userDetaile,
   updatePassword,
-  updateProfile
+  updateProfile,
+  allUser,
+  deleteUser
 };

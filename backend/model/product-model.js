@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const productSchema =new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Plase Enter Product Name"],
@@ -14,7 +14,7 @@ const productSchema =new mongoose.Schema({
     required: [true, "Plase Enter Product Prize"],
     maxLength: [8, "price can't exceed 8 number"],
   },
-  rating: {
+  ratings: {
     type: Number,
     default: 0,
   },
@@ -38,39 +38,44 @@ const productSchema =new mongoose.Schema({
     type: Number,
     required: [true, "Plase Enter Product Stock"],
     maxLength: [4, "price can't exceed 8 number"],
-    default:1
+    default: 1,
   },
   numOfReviews: {
     type: Number,
-    default:0
+    default: 0,
   },
-  reviews:[
+  reviews: [
     {
-        name:{
-            type:String,
-            required:true
-        },
-        rating:{
-            type:Number,
-            required:true
-        },
-        comment:{
-            type:String,
-            required:true
-        }
-    }
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "user",
+        require: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      rating: {
+        type: Number,
+        required: true,
+      },
+      comment: {
+        type: String,
+        required: true,
+      },
+    },
   ],
-  user:{
-    type:mongoose.Schema.ObjectId,
-    ref:"user",
-    require:true
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "user",
+    require: true,
   },
-  createdAt:{
-    type:Date,
-    default:Date.now()
-  }
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
-const Product=mongoose.model("Product",productSchema)
+const Product = mongoose.model("Product", productSchema);
 
-module.exports=Product
+module.exports = Product;
