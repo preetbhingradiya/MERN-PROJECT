@@ -60,9 +60,52 @@ const deleteProduct = catchAsyncError(async (req, res, next) => {
   });
 });
 
+//review product
+const createReview = catchAsyncError(async (req, res, next) => {
+  const { rating, comment, productId } = req.body;
+
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+
+  const products = await Product.findById(productId);
+  const isReview = products.reviews.forEach(
+    (rev) => rev.user.toString() === rev.user._id.toString()
+  );
+  if (isReview) {
+    products.reviews.forEach((rev) => {
+      if (rev.user.toString() === rev.user._id.toString()){
+        rev.rating = rating;
+        rev.comment = comment;
+      }
+    });
+  } else {
+    let data=products.reviews.push(review);
+    products.numOfReviews = products.reviews.length;
+  }
+
+  //5 star,5 star,4 star,2 star = 16/4   --4
+
+  let avg = 0;
+  products.ratings =products.reviews.forEach((rev) => {
+      avg+=rev.rating
+  })
+  products.ratings=avg/products.reviews.length
+  
+  // await products.save({validateBeforeSave:false})
+
+  res.status(200).json({
+    products,
+  });
+});
+
 module.exports = {
   getAllPrduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  createReview,
 };
