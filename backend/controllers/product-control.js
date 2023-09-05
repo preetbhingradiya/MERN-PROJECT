@@ -77,28 +77,71 @@ const createReview = catchAsyncError(async (req, res, next) => {
   );
   if (isReview) {
     products.reviews.forEach((rev) => {
-      if (rev.user.toString() === rev.user._id.toString()){
+      if (rev.user.toString() === rev.user._id.toString()) {
         rev.rating = rating;
         rev.comment = comment;
       }
     });
   } else {
-    let data=products.reviews.push(review);
+    let data = products.reviews.push(review);
     products.numOfReviews = products.reviews.length;
   }
 
   //5 star,5 star,4 star,2 star = 16/4   --4
 
   let avg = 0;
-  products.ratings =products.reviews.forEach((rev) => {
-      avg+=rev.rating
-  })
-  products.ratings=avg/products.reviews.length
-  
-  // await products.save({validateBeforeSave:false})
+  products.ratings = products.reviews.forEach((rev) => {
+    avg += rev.rating;
+  });
+  products.ratings = avg / products.reviews.length;
+
+  await products.save({ validateBeforeSave: false });
 
   res.status(200).json({
     products,
+  });
+});
+
+//get all product review
+const getReview = catchAsyncError(async (req, res, next) => {
+  const product = await Product.findById(req.query.id);
+
+  if (!product) return next(new ErrorHendler("user can not found", 400));
+
+  res.status(200).json({
+    success: true,
+    review: product.reviews,
+  });
+});
+
+//delete review
+const deleteReview = catchAsyncError(async (req, res, next) => {
+  const product = await Product.findById(req.query.productId);
+
+  if (!product) return next(new ErrorHendler("user can not found", 400));
+
+  const reviews = product.reviews.filter(
+    (rev) => rev._id.toString() !== req.query.id.toString()
+     //review id can sotre databswe !== id user can ente qurey
+  );
+
+  let avg = 0;
+  reviews.forEach((rev) => {
+    avg += rev.rating;
+  });
+  const ratings = avg / reviews.length;
+
+  const numOfReviews = reviews.length;
+
+  await Product.findByIdAndUpdate(
+    req.query.productId,
+    { reviews, ratings, numOfReviews },
+    { new: true, runValidators: true, useFindeAndModify: false }
+  );
+
+  res.status(200).json({
+    success: true,
+    product,
   });
 });
 
@@ -108,4 +151,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createReview,
+  getReview,
+  deleteReview,
 };

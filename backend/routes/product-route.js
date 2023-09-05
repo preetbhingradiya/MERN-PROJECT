@@ -1,5 +1,5 @@
 const  Router  = require("express");
-const { getAllPrduct, createProduct, updateProduct, deleteProduct, createReview } = require("../controllers/product-control");
+const { getAllPrduct, createProduct, updateProduct, deleteProduct, createReview, getReview, deleteReview } = require("../controllers/product-control");
 const { Auth, authorizeRole } = require("../middleware/auth");
 
 const product=Router()
@@ -13,5 +13,9 @@ product.patch('/product/:id',Auth, authorizeRole("admin") ,updateProduct)
 product.delete('/product/:id',Auth, authorizeRole("admin") , deleteProduct)
 
 product.put('/product/review',Auth,createReview)
+
+product.get("/allreview",getReview)
+
+product.delete("/delete/review",Auth,deleteReview)
 
 module.exports=product
