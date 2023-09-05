@@ -55,7 +55,6 @@ userSchema.pre("save", async function (next) {
 //   return await bcrypt.compare(password,this.password)
 // }
 
-
 //JWT token
 userSchema.methods.JwtToken=function(){
   return jwt.sign({id:this._id},process.env.JWT_SECRET,{
