@@ -57,4 +57,46 @@ const loginUser=catchAsyncError(async(req,res,next)=>{
     })
 })
 
-module.exports = { createOrder ,singleUser, loginUser};
+//update order --admin
+const updateOrdedr=catchAsyncError(async(req,res,next)=>{
+  const order=await Order.findById(req.params.id)
+
+  if(!order) return next(new ErrorHendler("order not found this id",404))
+
+  if(order.orderStatus==="Deliverd") return next(new ErrorHendler("Tou hve alredy order this product",400))
+
+  order.orderItems.forEach(async(ele)=>{
+    await updateStock(ele.product,ele.quantity)
+  })
+
+  order.orderStatus=req.body.status
+
+  await order.save({validateBeforeSave:false})
+
+  res.status(200).json({
+    success:true,
+  }) 
+})
+
+//delete order
+const deleteOrder=catchAsyncError(async(req,res,next)=>{
+  const order=await Order.findById(req.params.id)
+
+  if(!order) return next(new ErrorHendler("order not found this id",404))
+
+  await order.deleteOne()
+
+  res.status(200).json({
+      success:true,
+  })
+})
+
+async function updateStock(id,quantity){
+  let product=await Product.findById(id)
+
+  product.stock-=quantity
+
+  await product.save({validateBeforeSave:false})
+}
+
+module.exports = { createOrder ,singleUser, loginUser,updateOrdedr,deleteOrder};
