@@ -1,7 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import {CgMouse} from 'react-icons/cg'
 import './Home.css'
 import Product from './Product.jsx'
+import Helment from "../layout/MetaData";
+import {getProduct} from '../../actions/productAction'
+import {useSelector,useDispatch} from "react-redux"
 
 const product={
   name:"T-shirt",
@@ -11,8 +14,18 @@ const product={
 }
 
 const Home = () => {
+
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    dispatch(getProduct())
+  },[dispatch])
+
   return (
     <Fragment>
+
+      <Helment title={"Ecommerce"} />
+      
       <div className="banner">
         <p>Welcome to ecommerce</p>
         <h1>FIND AMAZING PRODUCT BELOW</h1>
@@ -27,6 +40,13 @@ const Home = () => {
       <h2 className="Homeheading">Featured Product</h2>
 
       <div id="container" className="container">
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
+        <Product product={product}/>
         <Product product={product}/>
       </div>
     </Fragment>

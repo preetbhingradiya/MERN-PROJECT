@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
   },
   ratings: {
     type: Number,
-    // default: 0,
+    default: 0,
   },
   images: [
     {
@@ -65,9 +65,9 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  user: {
+  userId: {
     type: mongoose.Schema.ObjectId,
-    ref: "user",
+    ref: "User",
     require: true,
   },
   createdAt: {
