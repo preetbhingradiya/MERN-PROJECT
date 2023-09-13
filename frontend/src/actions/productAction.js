@@ -30,25 +30,24 @@ import {
     }
   }
 
-  export const getProductDetails=(id)=>async (dispatch)=>{
-    try {
+ export const getproductDetails=({id})=> async(dispatch)=>{
 
+    try {
         dispatch({type:PRODUCT_DETAIES_REQUEST})
 
-        const data= await axios.get(`api/v1/product/${id}`) 
+        const {data}=await axios.get(`/api/v1/product/${id}`)
 
         dispatch({
             type:PRODUCT_DETAIES_SUCCESS,
             payload:data
         })
-        
     } catch (error) {
         dispatch({
             type:PRODUCT_DETAIES_FAIL,
             payload:error.response.data.message
         })
     }
-  }
+ }
 
   export const clearErrors=()=>async(dispatch)=>{
     dispatch({type:CLEAR_ERRORS})
