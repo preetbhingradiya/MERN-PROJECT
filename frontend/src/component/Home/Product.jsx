@@ -14,7 +14,7 @@ const Product = ({ product }) => {
     isHalf:true
   };
   return (
-    <Link className="product" to={product._id}>
+    <Link className="product" to={`/product/${product._id}`}>
       <img src={product.images[0].img} alt="" />
       <p>{product.name}</p>
       <div>

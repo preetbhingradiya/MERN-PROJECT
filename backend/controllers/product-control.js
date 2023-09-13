@@ -20,6 +20,20 @@ const getAllPrduct = async (req, res) => {
   });
 };
 
+//get product Detaies
+const getProductDetails = catchAsyncError(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return next(new ErrorHendler("Product not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    product,
+  });
+});
+
 //create product
 const createProduct = catchAsyncError(async (req, res) => {
   req.body.userId=req.user.id
@@ -146,6 +160,7 @@ const deleteReview = catchAsyncError(async (req, res, next) => {
 
 module.exports = {
   getAllPrduct,
+  getProductDetails,
   createProduct,
   updateProduct,
   deleteProduct,
