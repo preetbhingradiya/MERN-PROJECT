@@ -22,15 +22,15 @@ const getAllPrduct = async (req, res) => {
 
 //get product Detaies
 const getProductDetails = catchAsyncError(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  const productOne = await Product.findById(req.params.id);
 
-  if (!product) {
+  if (!productOne) {
     return next(new ErrorHendler("Product not found", 404));
   }
 
   res.status(200).json({
     success: true,
-    product,
+    productOne,
   });
 });
 

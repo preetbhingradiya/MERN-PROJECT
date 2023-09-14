@@ -1,34 +1,29 @@
 import React, { Fragment, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
-import "./product.css";
-import { useDispatch, useSelector } from "react-redux";
-import { getproductDetails } from "../../actions/productAction";
+import { useSelector, useDispatch } from "react-redux";
+import {useParams} from 'react-router-dom'
+import { getproductDetails } from "../../actions/productAction.js";
 
-const ProductDetails = () => {
+const ProductDetails = ({}) => {
+  const {id}=useParams()
+
   const dispatch = useDispatch();
 
-  const { product,loading ,eror } = useSelector(
-    (state) => state.productDetail
+  const { product, loading, error } = useSelector(
+    (state) =>state.productDetails
   );
 
   useEffect(() => {
-    dispatch(getproductDetails());
-  }, [dispatch]);
+    dispatch(getproductDetails(id));
+  }, [dispatch, id]);
+
+  console.log(product);
 
   return (
     <Fragment>
-      <div className="productDetails">
+      <div className="ProductDetails">
         <div>
           <Carousel>
-            {product.images &&
-              product.images.map((item, i) => (
-                <img
-                  className="curouselImg"
-                  key={item.img}
-                  src={item.img}
-                  alt={`${i} slide`}
-                />
-              ))}
           </Carousel>
         </div>
       </div>

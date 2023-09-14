@@ -7,7 +7,7 @@ import {  productDetailsReducer, productReducer } from './reducers/productReduce
 
 const reducer=combineReducers({
     products:productReducer,
-    productDetail:productDetailsReducer
+    productDetails:productDetailsReducer
 })
 
 const initialstate={}
