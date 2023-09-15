@@ -36,29 +36,29 @@ export const productReducer = (state = { products: [] }, action) => {
   }
 };
 
-export const productDetailsReducer = (state = { product: {} }, action) => {
+export const productDetailesReducer=(state={product:{}},action)=>{
   switch (action.type) {
-    case PRODUCT_DETAIES_REQUEST:
-      return {
-        loading: true,
-        ...state,
+    case  PRODUCT_DETAIES_REQUEST:
+      return{
+        loading:true,
+        ...state
       };
     case PRODUCT_DETAIES_SUCCESS:
-      return {
-        loading: false,
-        product: action.payload.productOne,
+      return{
+        loading:false,
+        product:action.payload
       };
     case PRODUCT_DETAIES_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
+        return {
+          loading: false,
+          error: action.payload,
+        };
     case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      };
-    default:
+        return {
+          ...state,
+          error: null,
+        };
+      default:
       return state;
   }
-};
+}
