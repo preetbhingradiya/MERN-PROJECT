@@ -5,14 +5,16 @@ class ApiFeatures {
   }
 
   search() {
-    const keyword = this.qureystr.keyword ? {
+    const name = this.qureystr.name ? {
         name:{
-            $regex:this.qureystr.keyword,
+            $regex:this.qureystr.name,
             $options:'i',
         },
     } : {}
 
-    this.qurey=this.qurey.find({...keyword})
+    console.log(name);
+
+    this.qurey=this.qurey.find({...name})
     return this;
   }
 

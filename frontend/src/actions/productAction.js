@@ -14,7 +14,7 @@ export const getProduct = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
 
-    const { data } = await axios.get("/api/v1/product"); //find gel all product in backend side
+    const { data } = await axios.get('/api/v1/products'); //find gel all product in backend side
 
     dispatch({
       type: ALL_PRODUCT_SUCCESS,

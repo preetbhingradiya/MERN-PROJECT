@@ -4,7 +4,7 @@ const { Auth, authorizeRole } = require("../middleware/auth");
 
 const product=Router()
 
-product.get('/product',getAllPrduct)
+product.get('/products',getAllPrduct)
 
 product.get('/product/:id',getProductDetails)
 

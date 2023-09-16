@@ -13,6 +13,7 @@ const getAllPrduct = async (req, res) => {
     .filter()
     .pagination(resultPage);
   const show = await API.qurey;
+
   res.status(200).json({
     success: true,
     show,
@@ -36,12 +37,12 @@ const getProductDetails = catchAsyncError(async (req, res, next) => {
 
 //create product
 const createProduct = catchAsyncError(async (req, res) => {
-  req.body.userId=req.user.id
-  let products =(await Product.create(req.body)).populate("userId")
+  req.body.userId = req.user.id;
+  let products = (await Product.create(req.body)).populate("userId");
   res.status(200).json({
-    success:true,
-    products
-  })
+    success: true,
+    products,
+  });
 });
 
 //Updated Product
@@ -135,7 +136,7 @@ const deleteReview = catchAsyncError(async (req, res, next) => {
 
   const reviews = product.reviews.filter(
     (rev) => rev._id.toString() !== req.query.id.toString()
-     //review id can sotre databswe !== id user can ente qurey
+    //review id can sotre databswe !== id user can ente qurey
   );
 
   let avg = 0;
