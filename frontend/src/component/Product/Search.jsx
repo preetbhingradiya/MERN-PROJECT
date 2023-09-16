@@ -2,13 +2,13 @@ import React, { Fragment, useState } from "react";
 import "./Search.css";
 import {  } from "react-router-dom";
 
-const Search = ({history}) => {
+const Search = () => {
   const [keyword, setKeyword] = useState("");
 
   const onSubmitHendler = (e) => {
     e.preventDefault();
     if(keyword.trim()){
-        window.location.replace(`/products/${keyword}`);
+        window.location.replace(`/products/?name=${keyword}`);
     }
     else{
         window.location.replace('/products');

@@ -10,11 +10,12 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants.js";
 
-export const getProduct = () => async (dispatch) => {
+export const getProduct = (keyword="") => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
+    let find=`/api/v1/products?name=${keyword}`
 
-    const { data } = await axios.get('/api/v1/products'); //find gel all product in backend side
+    const { data } = await axios.get(find); //find gel all product in backend side
 
     dispatch({
       type: ALL_PRODUCT_SUCCESS,
