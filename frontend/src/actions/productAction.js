@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import {
   ALL_PRODUCT_REQUEST,
   ALL_PRODUCT_SUCCESS,
@@ -10,10 +9,10 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants.js";
 
-export const getProduct = (keyword="") => async (dispatch) => {
+export const getProduct = (keyword="",) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
-    let find=`/api/v1/products?name=${keyword}`
+    let find=`/api/v1/products?name=${keyword}&page=1`
 
     const { data } = await axios.get(find); //find gel all product in backend side
 

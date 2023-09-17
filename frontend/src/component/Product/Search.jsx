@@ -8,7 +8,7 @@ const Search = () => {
   const onSubmitHendler = (e) => {
     e.preventDefault();
     if(keyword.trim()){
-        window.location.replace(`/products/?name=${keyword}`);
+        window.location.replace(`/products?name=${keyword}`);
     }
     else{
         window.location.replace('/products');

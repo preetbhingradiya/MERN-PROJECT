@@ -5,7 +5,7 @@ const ApiFeatures = require("../utils/featurse");
 
 //Get all product
 const getAllPrduct = async (req, res) => {
-  let resultPage = 8;
+  let resultPage = 7;
   const productCount = await Product.countDocuments();
 
   const API = new ApiFeatures(Product.find(), req.query)
@@ -18,6 +18,7 @@ const getAllPrduct = async (req, res) => {
     success: true,
     show,
     productCount,
+    resultPage
   });
 };
 

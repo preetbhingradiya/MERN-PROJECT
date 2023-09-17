@@ -12,8 +12,6 @@ class ApiFeatures {
         },
     } : {}
 
-    console.log(name);
-
     this.qurey=this.qurey.find({...name})
     return this;
   }
