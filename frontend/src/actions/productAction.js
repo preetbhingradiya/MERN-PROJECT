@@ -9,10 +9,29 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants.js";
 
-export const getProduct = (keyword="",) => async (dispatch) => {
+export const getProduct = (keyword="",currentaPage=1,price=[0,25000]) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
-    let find=`/api/v1/products?name=${keyword}&page=1`
+    let find=`/api/v1/products?name=${keyword}&page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`
+
+    const { data } = await axios.get(find); //find gel all product in backend side
+
+    dispatch({
+      type: ALL_PRODUCT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getProducts = (currentaPage=1,price=[0,25000]) => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_PRODUCT_REQUEST });
+    let find=`/api/v1/products?page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`
 
     const { data } = await axios.get(find); //find gel all product in backend side
 
