@@ -8,11 +8,24 @@ import {Slider,Typography} from '@mui/material'
 import "./Products.css";
 import { useSearchParams } from "react-router-dom";
 
+const categories=[
+  "Laptop",
+  "Footwear",
+  "Bottom",
+  "Tops",
+  "Attrie",
+  "Camera",
+  "SmartPhones",
+  "mobile"
+]
+
 function Products() {
   const dispatch = useDispatch();
 
   const [CurrentPage, setCurrentPage] = useState(1);
   const [price, setprice] = useState([0,25000]);
+  const [category, setcategory] = useState("");
+
 
   const { products, loading, productCount, resultPage } = useSelector(
     (state) => state.products
@@ -32,11 +45,11 @@ function Products() {
 
   useEffect(() => {
     if (searchParams.get("name")) {
-      dispatch(getProduct(keyword,CurrentPage,price));
+      dispatch(getProduct(keyword,CurrentPage,price,category));
     } else {
-      dispatch(getProducts(CurrentPage,price));
+      dispatch(getProducts(CurrentPage,price,category));
     }
-  }, [dispatch,CurrentPage, keyword,price, searchParams]);
+  }, [dispatch,CurrentPage, keyword,price,category, searchParams]);
 
   return (
     <Fragment>
@@ -53,7 +66,7 @@ function Products() {
           </div>
 
           <div className="filterBox">
-            <Typography>
+            <Typography>Price</Typography>
               <Slider
               value={price}
               onChange={priceHendler}
@@ -62,7 +75,14 @@ function Products() {
               min={0}
               max={25000}
               />
-            </Typography>
+              <Typography>Category</Typography>
+              <ul className="categoryBox">
+                {categories.map((category)=>(
+                  <li className="category-link" key={category} onClick={()=>setcategory(category)}>
+                    {category}
+                  </li>
+                ))}
+              </ul>
           </div>
 
           {resultPage < productCount && (

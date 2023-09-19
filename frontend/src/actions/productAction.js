@@ -9,10 +9,14 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants.js";
 
-export const getProduct = (keyword="",currentaPage=1,price=[0,25000]) => async (dispatch) => {
+export const getProduct = (keyword="",currentaPage=1,price=[0,25000],category) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
     let find=`/api/v1/products?name=${keyword}&page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`
+
+    if(category){
+    find=`/api/v1/products?name=${keyword}&page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}`
+    }
 
     const { data } = await axios.get(find); //find gel all product in backend side
 
@@ -28,10 +32,10 @@ export const getProduct = (keyword="",currentaPage=1,price=[0,25000]) => async (
   }
 };
 
-export const getProducts = (currentaPage=1,price=[0,25000]) => async (dispatch) => {
+export const getProducts = (currentaPage=1,price=[0,25000],category) => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
-    let find=`/api/v1/products?page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`
+    let find=`/api/v1/products?page=${currentaPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}`
 
     const { data } = await axios.get(find); //find gel all product in backend side
 
