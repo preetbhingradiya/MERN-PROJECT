@@ -4,11 +4,11 @@ import { getProduct, getProducts } from "../../actions/productAction";
 import Loader from "../layout/loading/Loader";
 import ProductCard from "../Home/ProductCard";
 import Pagination from "react-js-pagination";
-import {Slider,Typography} from '@mui/material'
+import {Slider, Typography } from "@mui/material";
 import "./Products.css";
 import { useSearchParams } from "react-router-dom";
 
-const categories=[
+const categories = [
   "Laptop",
   "Footwear",
   "Bottom",
@@ -16,16 +16,16 @@ const categories=[
   "Attrie",
   "Camera",
   "SmartPhones",
-  "mobile"
-]
+  "mobile",
+];
 
 function Products() {
   const dispatch = useDispatch();
 
   const [CurrentPage, setCurrentPage] = useState(1);
-  const [price, setprice] = useState([0,25000]);
+  const [price, setprice] = useState([0, 25000]);
   const [category, setcategory] = useState("");
-
+  const [ratings, setratings] = useState(0);
 
   const { products, loading, productCount, resultPage } = useSelector(
     (state) => state.products
@@ -35,9 +35,9 @@ function Products() {
     setCurrentPage(e);
   };
 
-  const priceHendler=(event,newprice)=>{
-    setprice(newprice)
-  }
+  const priceHendler = (event, newprice) => {
+    setprice(newprice);
+  };
 
   const [searchParams] = useSearchParams();
 
@@ -45,11 +45,11 @@ function Products() {
 
   useEffect(() => {
     if (searchParams.get("name")) {
-      dispatch(getProduct(keyword,CurrentPage,price,category));
+      dispatch(getProduct(keyword, CurrentPage, price, category,ratings));
     } else {
-      dispatch(getProducts(CurrentPage,price,category));
+      dispatch(getProducts(CurrentPage, price,ratings,category));
     }
-  }, [dispatch,CurrentPage, keyword,price,category, searchParams]);
+  }, [dispatch, CurrentPage, keyword, price, category, ratings,searchParams]);
 
   return (
     <Fragment>
@@ -67,22 +67,40 @@ function Products() {
 
           <div className="filterBox">
             <Typography>Price</Typography>
-              <Slider
+            <Slider
               value={price}
               onChange={priceHendler}
               valueLabelDisplay="auto"
               aria-labelledby="range-slide"
               min={0}
               max={25000}
+            />
+            <Typography>Category</Typography>
+            <ul className="categoryBox">
+              {categories.map((category) => (
+                <li
+                  className="category-link"
+                  key={category}
+                  onClick={() => setcategory(category)}
+                >
+                  {category}
+                </li>
+              ))}
+            </ul>
+
+            <fieldset>
+              <Typography component="legend">Rating Above</Typography>
+              <Slider
+                value={ratings}
+                onChange={(e, newRating) => {
+                  setratings(newRating);
+                }}
+                aria-labelledby="continuous-slider"
+                valueLabelDisplay="auto"
+                min={0}
+                max={5}
               />
-              <Typography>Category</Typography>
-              <ul className="categoryBox">
-                {categories.map((category)=>(
-                  <li className="category-link" key={category} onClick={()=>setcategory(category)}>
-                    {category}
-                  </li>
-                ))}
-              </ul>
+            </fieldset>
           </div>
 
           {resultPage < productCount && (
