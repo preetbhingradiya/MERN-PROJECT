@@ -7,13 +7,14 @@ import "./productdetaile.css";
 import ReactStars from "react-rating-stars-component";
 import ReviewCard from "./ReviewCard";
 import Loader from "../layout/loading/Loader.jsx";
+import MetaData from "../layout/MetaData";
 
 function ProductDetailes({}) {
   const { id } = useParams();
 
   const dispatch = useDispatch();
 
-  const { product, loading, eror } = useSelector(
+  const { product, loading} = useSelector(
     (state) => state.productDetaile
   );
 
@@ -36,6 +37,7 @@ function ProductDetailes({}) {
         <Loader />
       ) : (
         <>
+          <MetaData title={`${product.name} --ECOMMERCE`}/>
           <div className="productDetail">
             <div>
               <Carousel>

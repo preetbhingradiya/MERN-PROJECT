@@ -1,22 +1,23 @@
 import React, { Fragment, useState } from "react";
 import "./Search.css";
-import {  } from "react-router-dom";
+import {} from "react-router-dom";
+import MetaData from "../layout/MetaData";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
 
   const onSubmitHendler = (e) => {
     e.preventDefault();
-    if(keyword.trim()){
-        window.location.replace(`/products?name=${keyword}`);
-    }
-    else{
-        window.location.replace('/products');
+    if (keyword.trim()) {
+      window.location.replace(`/products?name=${keyword}`);
+    } else {
+      window.location.replace("/products");
     }
   };
 
   return (
     <Fragment>
+      <MetaData title="SEARCH --ECOMMERCE" />
       <form className="SearchBox" onSubmit={onSubmitHendler}>
         <input
           type="text"

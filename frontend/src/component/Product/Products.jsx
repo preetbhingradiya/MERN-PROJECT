@@ -7,6 +7,7 @@ import Pagination from "react-js-pagination";
 import {Slider, Typography } from "@mui/material";
 import "./Products.css";
 import { useSearchParams } from "react-router-dom";
+import MetaData from "../layout/MetaData";
 
 const categories = [
   "Laptop",
@@ -57,6 +58,7 @@ function Products() {
         <Loader />
       ) : (
         <>
+          <MetaData title="PRODCTS --ECOMMERCE"/>
           <h2 className="productHeading">Products</h2>
           <div className="products">
             {products &&
