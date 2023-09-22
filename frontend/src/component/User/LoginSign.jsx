@@ -22,10 +22,10 @@ const LoginSign = () => {
   const [user, setUser] = useState({
     name: "",
     email: "",
-    passweord: "",
+    password: "",
   });
 
-  const { name, email, passweord } = user;
+  const { name, email, password } = user;
 
   const [avatar, setAvatar] = useState();
   const [avtarPreview, setAvtarPreview] = useState(
@@ -50,8 +50,8 @@ const LoginSign = () => {
     const myForm = new FormData();
 
     myForm.set("name", name);
-    myForm.set("eamil", email);
-    myForm.set("password", passweord);
+    myForm.set("email", email);
+    myForm.set("password", password);
     myForm.set("avatar", avatar);
     dispatch(register(myForm))
   };
@@ -164,7 +164,7 @@ const LoginSign = () => {
                     placeholder="Password"
                     required
                     name="password"
-                    value={passweord}
+                    value={password}
                     onChange={registerDataChange}
                   />
                 </div>
