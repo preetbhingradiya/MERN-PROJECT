@@ -4,10 +4,12 @@ import thunk from "redux-thunk"
 
 import {composeWithDevTools} from 'redux-devtools-extension'
 import { productDetailesReducer, productReducer } from './reducers/productReducer.js'
+import { userReducer } from './reducers/userReducer.js'
 
 const reducer=combineReducers({
     products:productReducer,
-    productDetaile:productDetailesReducer
+    productDetaile:productDetailesReducer,
+    user:userReducer
 })
 
 const initialstate={}
