@@ -9,11 +9,12 @@ import ProductDetailes from './component/Product/ProductDetailes.jsx'
 import Products from './component/Product/Products.jsx'
 import Search from './component/Product/Search.jsx'
 import LoginSign from "./component/User/LoginSign";
+import Profile from './component/User/Profile.jsx'
 import store from './store'
 import { loadUser } from "./actions/userAction";
 import { useSelector } from "react-redux";
 import UserOptions from './component/layout/header/UserOptions.js'
-
+import UpdateProfile from './component/User/UpdateProfile.jsx'
 function App() {
 
   const {isAuthenticated,user}=useSelector((state)=>state.user)
@@ -39,6 +40,8 @@ function App() {
         <Route path="/products/:name" Component={Products} />
         <Route extact path="/search" Component={Search} />
         <Route extact path="/login" Component={LoginSign} />
+        {isAuthenticated && <Route extact path="/account" Component={Profile} />}
+        {isAuthenticated && <Route extact path="/me/update" Component={UpdateProfile} />}
       </Routes>
 
       <Footer />

@@ -16,7 +16,7 @@ userRouter.get('/me',Auth,userDetaile)  //cheack only login user
 
 userRouter.patch("/password/update",Auth,updatePassword)
 
-userRouter.patch('/me/profile/:id',Auth,updateProfile)
+userRouter.patch('/me/profile',Auth,updateProfile)
 
 userRouter.get('/all/user',Auth,allUser)
 

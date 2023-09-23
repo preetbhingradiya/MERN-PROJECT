@@ -1,16 +1,24 @@
 import {
   CLEAR_ERRORS,
+  //login user
   LOGIN_FAIL,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  //register user
   REGISTER_USER_FAIL,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_REQUEST,
+  //load user
   LOAD_USER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
+  //logout user
   LOGOUT_SUCCESS,
-  LOGOUT_FAIL
+  LOGOUT_FAIL,
+  //profile user
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
 } from "../constants/userConstans";
 import axios from "axios";
 
@@ -72,6 +80,24 @@ export const LogoutUser = () => async (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
     dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
+  }
+};
+
+//profile
+export const updateProfile = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+
+    const config = { headers: { "Content-type": "multipart/from-data" } };
+
+    const { data } = await axios.patch(`/api/v1/me/profile`, userData, config);
+
+    dispatch({ type:UPDATE_PROFILE_SUCCESS, payload: data.user });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 

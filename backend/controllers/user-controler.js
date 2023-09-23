@@ -155,7 +155,7 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     role:req.body.role
   };
 
-  const updatProfile = await User.findByIdAndUpdate(req.params.id, newData, {
+  const updatProfile = await User.findByIdAndUpdate(req.user.id, newData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
