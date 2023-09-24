@@ -155,6 +155,24 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     role:req.body.role
   };
 
+  //cloudinary
+  if(req.body.avatar!==""){
+    const user=await  User.findById(req.user.id)
+    const imgId=user.avatar.public_id
+    await cloudinary.v2.uploader.destroy(imgId)
+
+    const myCloud=await cloudinary.v2.uploader.upload(req.body.avatar,{
+      folder:'avatars',
+      width:150,
+      crop:"scale"
+    })
+
+    newData.avatar={
+      public_id:myCloud.public_id,
+      url:myCloud.url
+    }
+  }
+
   const updatProfile = await User.findByIdAndUpdate(req.user.id, newData, {
     new: true,
     runValidators: true,
