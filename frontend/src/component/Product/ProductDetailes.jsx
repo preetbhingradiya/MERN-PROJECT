@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducDetaile } from "../../actions/productAction";
 import { useParams } from "react-router-dom";
@@ -14,13 +14,24 @@ function ProductDetailes({}) {
 
   const dispatch = useDispatch();
 
-  const { product, loading} = useSelector(
-    (state) => state.productDetaile
-  );
+  const { product, loading } = useSelector((state) => state.productDetaile);
 
   useEffect(() => {
     dispatch(getProducDetaile(id));
   }, [dispatch, id]);
+
+  const [quntiy, seQuntiy] = useState(1);
+
+  const increment = () => {
+    if (product.stock <= quntiy) return;
+    let qty = quntiy + 1;
+    seQuntiy(qty);
+  };
+  const decrement = () => {
+    if(quntiy<=1) return;
+    let qty = quntiy - 1;
+    seQuntiy(qty);
+  };
 
   const options = {
     edit: false,
@@ -37,7 +48,7 @@ function ProductDetailes({}) {
         <Loader />
       ) : (
         <>
-          <MetaData title={`${product.name} --ECOMMERCE`}/>
+          <MetaData title={`${product.name} --ECOMMERCE`} />
           <div className="productDetail">
             <div>
               <Carousel>
@@ -68,9 +79,9 @@ function ProductDetailes({}) {
                 <h1>{`${product.price}`}</h1>
                 <div className="detaile-3-1">
                   <div className="detaile-3-1-1">
-                    <button>-</button>
-                    <input type="number" value="1" />
-                    <button>+</button>
+                    <button onClick={decrement}>-</button>
+                    <input readOnly type="number" value={quntiy} />
+                    <button onClick={increment}>+</button>
                   </div>
                   <button>Add To Cart</button>
                 </div>
@@ -90,8 +101,8 @@ function ProductDetailes({}) {
               <button className="submitReview">Submit Review</button>
             </div>
           </div>
-          <h3 className="reviewsHeading">REVIWS</h3>
 
+          <h3 className="reviewsHeading">REVIWS</h3>
           {product.reviews && product.reviews[0] ? (
             <div className="reviews">
               {product.reviews &&
