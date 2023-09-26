@@ -1,13 +1,14 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducDetaile } from "../../actions/productAction";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import "./productdetaile.css";
 import ReactStars from "react-rating-stars-component";
 import ReviewCard from "./ReviewCard";
 import Loader from "../layout/loading/Loader.jsx";
 import MetaData from "../layout/MetaData";
+import { addToCart } from "../../actions/cartAction";
 
 function ProductDetailes({}) {
   const { id } = useParams();
@@ -32,6 +33,10 @@ function ProductDetailes({}) {
     let qty = quntiy - 1;
     seQuntiy(qty);
   };
+
+  const addToCartHendler=()=>{
+    dispatch(addToCart(id,quntiy))
+  }
 
   const options = {
     edit: false,
@@ -83,7 +88,7 @@ function ProductDetailes({}) {
                     <input readOnly type="number" value={quntiy} />
                     <button onClick={increment}>+</button>
                   </div>
-                  <button>Add To Cart</button>
+                  <button onClick={addToCartHendler}>Add To Cart</button>
                 </div>
 
                 <p>
@@ -106,7 +111,7 @@ function ProductDetailes({}) {
           {product.reviews && product.reviews[0] ? (
             <div className="reviews">
               {product.reviews &&
-                product.reviews.map((review) => <ReviewCard review={review} />)}
+                product.reviews.map((review,i) => <ReviewCard review={review} key={i} />)}
             </div>
           ) : (
             <p className="noReviews">No Reviwes Yet</p>

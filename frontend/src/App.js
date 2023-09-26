@@ -15,6 +15,8 @@ import { loadUser } from "./actions/userAction";
 import { useSelector } from "react-redux";
 import UserOptions from './component/layout/header/UserOptions.js'
 import UpdateProfile from './component/User/UpdateProfile.jsx'
+import Cart from './component/Cart/Cart'
+
 function App() {
 
   const {isAuthenticated,user}=useSelector((state)=>state.user)
@@ -42,6 +44,7 @@ function App() {
         <Route extact path="/login" Component={LoginSign} />
         {isAuthenticated && <Route extact path="/account" Component={Profile} />}
         {isAuthenticated && <Route extact path="/me/update" Component={UpdateProfile} />}
+        <Route extact path="/cart" Component={Cart} />
       </Routes>
 
       <Footer />
