@@ -2,10 +2,16 @@ import React, { Fragment } from "react";
 import "./Cart.css";
 import CartItems from "./CartItems.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import { removeItemFromCart } from "../../actions/cartAction";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
+
+  const deleteItems=(id)=>{
+    dispatch(removeItemFromCart(id))
+  }
+
   console.log(cartItems);
   return (
     <Fragment>
@@ -19,7 +25,7 @@ const Cart = () => {
         {cartItems &&
           cartItems.map((item) => (
             <div className="cartContainer">
-              <CartItems item={item} />
+              <CartItems item={item} remove={deleteItems} />
               <div className="cartInput">
                 <input type="number" readOnly value={item.quntity} />
               </div>

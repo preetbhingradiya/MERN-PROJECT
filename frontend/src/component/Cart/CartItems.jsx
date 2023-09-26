@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import './cartItem.css'
 import { Link } from 'react-router-dom'
 
-function CartItems({item}) {
+function CartItems({item,remove}) {
   return (
     <Fragment>
         <div className="CartItemCard">
@@ -10,7 +10,7 @@ function CartItems({item}) {
           <div>
             <Link to={`/product/${item.product}`}>{item.name}</Link>
             <span>{`${item.price}`}</span>
-            <p>Remove</p>
+            <p onClick={()=>remove(item.product)}>Remove</p>
           </div>
         </div>
     </Fragment>
