@@ -11,13 +11,13 @@ import MetaData from "../layout/MetaData";
 
 const categories = [
   "Laptop",
-  "Footwear",
-  "Bottom",
+  "canon",
   "Tops",
-  "Attrie",
   "Camera",
-  "SmartPhones",
+  "SmartWatch",
   "mobile",
+  "bag",
+  "Footware"
 ];
 
 function Products() {
@@ -75,7 +75,7 @@ function Products() {
               valueLabelDisplay="auto"
               aria-labelledby="range-slide"
               min={0}
-              max={25000}
+              max={250000}
             />
             <Typography>Category</Typography>
             <ul className="categoryBox">
@@ -105,7 +105,7 @@ function Products() {
             </fieldset>
           </div>
 
-          {resultPage < productCount && (
+          
             <div className="paginationBox">
               <Pagination
                 activePage={CurrentPage}
@@ -122,7 +122,6 @@ function Products() {
                 activeLinkClass="pageLikActive"
               />
             </div>
-          )}
         </>
       )}
     </Fragment>
